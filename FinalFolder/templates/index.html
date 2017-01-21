@@ -1,0 +1,52 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Ruhlman Revelations{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Department Perception vs. Ruhlman Reality App </a>
+        </div>    
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+   		 <form action="/inputText" method="post">
+  			<input type="text" name=inputText></input>
+ 			 <input type="submit" value="Search"></input>
+		</form>
+        <div class="row">
+            {% for id in ids %}
+                <h2>Department work perceptions vs. Ruhlman reality</h2>
+                <div id="{{id}}"></div>
+            {% endfor %}
+        </div>
+         <div>
+        </div>
+    </div>
+
+<footer>
+    <!-- D3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Plotly.js -->
+    <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
+
+    <script type="text/javascript">
+
+        var graphs = {{graphJSON | safe}};
+        var ids = {{ids | safe}};
+        //var data = {{data | safe}}
+        for(var i in graphs) {
+            Plotly.plot(ids[i], // the ID of the div, created above
+                        graphs[i].data,
+                        graphs[i].layout || {});
+        }
+
+    </script>
+</footer>
+
+{% endblock %}
